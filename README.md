@@ -2,7 +2,18 @@
 
 SignalScope is a dark, terminal-inspired stock research dashboard built with Next.js App Router, TypeScript, Tailwind CSS, Recharts, Framer Motion, and Lucide React.
 
-Phase 1 is frontend-only and uses high-quality mocked data. Real provider clients, Supabase persistence, OpenAI report generation, compare workflows, watchlists, and PDF export are intentionally staged for later milestones.
+SignalScope is currently a polished MVP/prototype with free public delayed market data where available, curated/mock research content, sector navigation, heatmaps, partnerships, and dark/light theme support.
+
+## Fresh Chat Handoff
+
+If a new Codex/chat session takes over this repo, read these files first:
+
+1. [`docs/FRESH_CHAT_HANDOFF.md`](docs/FRESH_CHAT_HANDOFF.md)
+2. [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+3. [`docs/DATA_AND_ROADMAP.md`](docs/DATA_AND_ROADMAP.md)
+4. [`docs/CHANGELOG_CONTEXT.md`](docs/CHANGELOG_CONTEXT.md)
+
+Those files are intentionally detailed and include product goals, architecture, current data truth, known limitations, user preferences, route map, and next steps.
 
 ## Getting Started
 
@@ -19,7 +30,10 @@ Open [http://localhost:3000](http://localhost:3000), then search for `NVDA` or v
 
 - Landing page with terminal-style ticker search
 - `/ticker/[symbol]` research dashboard route
-- Mocked company profile, price chart, financial metrics, competitors, news, filings, valuation, theme exposure, catalysts, bull case, bear case, and risk dashboard
+- Free public delayed quote/chart/stat overlay from Nasdaq where available
+- Mocked/curated financial metrics, competitors, news, filings, valuation, theme exposure, catalysts, bull case, bear case, risks, and partnerships
+- `/heatmaps` full-page index/ETF heatmap view
+- `/sectors` and `/sector/[slug]` sector navigation
 - Loading skeleton and error state for ticker dashboards
 - Seed peer groups and theme taxonomy
 - Legal/research disclaimer in the app footer
