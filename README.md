@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SignalScope
+
+SignalScope is a dark, terminal-inspired stock research dashboard built with Next.js App Router, TypeScript, Tailwind CSS, Recharts, Framer Motion, and Lucide React.
+
+Phase 1 is frontend-only and uses high-quality mocked data. Real provider clients, Supabase persistence, OpenAI report generation, compare workflows, watchlists, and PDF export are intentionally staged for later milestones.
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies and run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000), then search for `NVDA` or visit [http://localhost:3000/ticker/NVDA](http://localhost:3000/ticker/NVDA).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Current MVP Surface
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Landing page with terminal-style ticker search
+- `/ticker/[symbol]` research dashboard route
+- Mocked company profile, price chart, financial metrics, competitors, news, filings, valuation, theme exposure, catalysts, bull case, bear case, and risk dashboard
+- Loading skeleton and error state for ticker dashboards
+- Seed peer groups and theme taxonomy
+- Legal/research disclaimer in the app footer
 
-## Learn More
+## Environment
 
-To learn more about Next.js, take a look at the following resources:
+Copy `.env.example` to `.env.local` when backend integrations begin. Do not expose provider keys to the client.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+cp .env.example .env.local
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Next Milestones
 
-## Deploy on Vercel
+1. Add typed provider clients for SEC EDGAR, Financial Modeling Prep, Finnhub, and Polygon/Massive.
+2. Normalize provider data into the dashboard shape and add cache freshness logic.
+3. Add server-only OpenAI structured JSON report generation.
+4. Add Supabase persistence if configured, with mock fallback when keys are missing.
+5. Build compare and PDF export flows after the dashboard/data path is stable.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev` starts the local dev server.
+- `npm run build` creates a production build.
+- `npm run lint` runs ESLint.

@@ -1,0 +1,8 @@
+{
+  "AI GPUs": ["NVDA", "AMD"],
+  "AI Networking": ["AVGO", "MRVL", "CRDO", "ANET"],
+  "Optical Components": ["AAOI", "LITE", "COHR"],
+  "Photomasks": ["PLAB"],
+  "Servers/Data Center Hardware": ["SMCI", "DELL", "HPE", "VRT"],
+  "Nuclear/Power": ["OKLO", "CEG", "VST", "GEV", "SMR"]
+}

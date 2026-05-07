@@ -16,9 +16,10 @@ export function TickerSearchBar({
 }>) {
   const router = useRouter();
   const [ticker, setTicker] = useState("");
+  const exampleText = examples.join(", ");
   const placeholder = useMemo(
-    () => (compact ? "Enter ticker..." : `Enter ticker... e.g. ${examples.join(", ")}`),
-    [compact, examples],
+    () => (compact ? "Enter ticker..." : "Enter ticker..."),
+    [compact],
   );
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -43,6 +44,7 @@ export function TickerSearchBar({
         value={ticker}
         onChange={(event) => setTicker(event.target.value)}
         placeholder={placeholder}
+        title={`Examples: ${exampleText}`}
         aria-label="Ticker symbol"
         className={cn(
           "min-w-0 flex-1 bg-transparent font-mono uppercase text-white outline-none placeholder:text-zinc-600",
