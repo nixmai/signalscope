@@ -28,7 +28,7 @@ export function StockHeader({ data }: Readonly<{ data: DashboardData }>) {
         </div>
         <div className="min-w-[280px]">
           <div className="rounded-md border border-white/10 bg-black/30 p-4">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-500">Current price</p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-500">Last available price</p>
             <div className="mt-2 flex items-end gap-3">
               <span className="text-3xl font-semibold text-white">${data.quote.price.toFixed(2)}</span>
               <span className={positive ? "pb-1 text-sm text-emerald-300" : "pb-1 text-sm text-rose-300"}>
@@ -40,6 +40,9 @@ export function StockHeader({ data }: Readonly<{ data: DashboardData }>) {
             <div className="mt-3 flex justify-between font-mono text-xs text-zinc-500">
               <span>Market cap {formatMarketCap(data.company.marketCap)}</span>
               <span>{data.quote.lastUpdated}</span>
+            </div>
+            <div className="mt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-cyan-200/70">
+              {data.quote.source} / {data.quote.freshness.replaceAll("_", " ")}
             </div>
           </div>
           <div className="mt-3 grid grid-cols-4 gap-2">

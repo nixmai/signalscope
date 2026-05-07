@@ -1,3 +1,4 @@
+import { fetchFreePriceData } from "@/lib/api/free-market-data";
 import type { DashboardData } from "@/types/stock";
 
 export const suggestedTickers = ["NVDA", "AMD", "PLAB", "CRDO", "MRVL", "OKLO", "AAOI", "SMCI"];
@@ -30,6 +31,8 @@ export const mockDashboard: DashboardData = {
     changePercent: 1.86,
     lastUpdated: "May 6, 2026 1:15 PM PT",
     currency: "USD",
+    source: "Demo data",
+    freshness: "mock",
   },
   priceHistory: [
     { date: "Jan", close: 84, volume: 312 },
@@ -45,6 +48,10 @@ export const mockDashboard: DashboardData = {
     { date: "Nov", close: 134, volume: 421 },
     { date: "Dec", close: 141, volume: 454 },
   ],
+  dataNotice: {
+    label: "Demo data only",
+    detail: "Prices, financials, news, filings, and report text are mocked until a free or configured provider succeeds.",
+  },
   financialMetrics: [
     { label: "Revenue", value: "$130.5B", change: "+114% YoY", status: "up" },
     { label: "Gross margin", value: "75.0%", change: "+2.3 pts", status: "up" },
@@ -403,6 +410,47 @@ export function getMockDashboard(symbol: string): DashboardData {
   };
 
   return data;
+}
+
+export async function getDashboardData(symbol: string): Promise<DashboardData> {
+  const data = getMockDashboard(symbol);
+  const freePriceData = await fetchFreePriceData(data.company.ticker);
+
+  if (!freePriceData) {
+    return {
+      ...data,
+      dataNotice: {
+        label: "Demo fallback active",
+        detail: "A free price source was unavailable, so this page is using ticker-specific demo data.",
+      },
+    };
+  }
+
+  return {
+    ...data,
+    quote: {
+      ...data.quote,
+      price: freePriceData.price,
+      change: freePriceData.change,
+      changePercent: freePriceData.changePercent,
+      lastUpdated: `Last available ${freePriceData.lastTradingDate}`,
+      source: freePriceData.source,
+      freshness: freePriceData.source.includes("Nasdaq") ? "delayed" : "end_of_day",
+    },
+    priceHistory: compressHistoryForChart(freePriceData.history),
+    dataNotice: {
+      label: "Free delayed/public price data",
+      detail:
+        "Price and chart history are pulled from a free public source and may be delayed, end-of-day, rate-limited, or unavailable. Fundamentals and report text are still mocked.",
+      sourceUrl: freePriceData.sourceUrl,
+    },
+  };
+}
+
+function compressHistoryForChart(history: DashboardData["priceHistory"]) {
+  if (history.length <= 80) return history;
+  const step = Math.ceil(history.length / 80);
+  return history.filter((_, index) => index % step === 0 || index === history.length - 1);
 }
 
 type MockProfile = {

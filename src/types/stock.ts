@@ -122,8 +122,15 @@ export type DashboardData = {
     changePercent: number;
     lastUpdated: string;
     currency: string;
+    source: string;
+    freshness: "live" | "delayed" | "end_of_day" | "mock";
   };
   priceHistory: PricePoint[];
+  dataNotice: {
+    label: string;
+    detail: string;
+    sourceUrl?: string;
+  };
   financialMetrics: FinancialMetric[];
   revenueMargins: RevenueMarginPoint[];
   competitors: Competitor[];

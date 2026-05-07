@@ -2,7 +2,7 @@
 
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card, CardHeader, StatusPill } from "@/components/ui/card";
 import type { DashboardData } from "@/types/stock";
 
 const chartText = "#a1a1aa";
@@ -11,7 +11,11 @@ const grid = "rgba(255,255,255,0.08)";
 export function PriceChartCard({ data }: Readonly<{ data: DashboardData }>) {
   return (
     <Card className="min-h-[330px]">
-      <CardHeader eyebrow="Price action" title="12-month price chart" />
+      <CardHeader
+        eyebrow="Price action"
+        title="Price history"
+        action={<StatusPill tone={data.quote.freshness === "mock" ? "warning" : "positive"}>{data.quote.freshness.replaceAll("_", " ")}</StatusPill>}
+      />
       <div className="h-[270px] p-4">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data.priceHistory}>
