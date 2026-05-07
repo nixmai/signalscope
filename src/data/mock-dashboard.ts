@@ -251,12 +251,434 @@ export const mockDashboard: DashboardData = {
 
 export function getMockDashboard(symbol: string): DashboardData {
   // TODO: Replace with normalized provider data from SEC, FMP, Finnhub, and Polygon/Massive.
-  return {
-    ...mockDashboard,
-    company: {
-      ...mockDashboard.company,
-      ticker: symbol.toUpperCase(),
-      name: symbol.toUpperCase() === "NVDA" ? mockDashboard.company.name : `${symbol.toUpperCase()} Research Profile`,
+  const ticker = symbol.toUpperCase();
+  const profile = mockProfiles[ticker] ?? {
+    name: `${ticker} Research Profile`,
+    description: `${ticker} is shown with generated mock research data until live provider integrations are connected.`,
+    industry: "Equity research preview",
+    sector: "Market data pending",
+    ceo: "Data pending",
+    marketCap: 18400000000,
+    price: 42.8,
+    change: -0.34,
+    revenue: "$4.2B",
+    revenueGrowth: "+9% YoY",
+    margin: "41.0%",
+    operatingMargin: "14.6%",
+    netIncome: "$620M",
+    fcf: "$510M",
+    cash: "$1.8B",
+    debt: "$1.1B",
+    ps: "4.4x",
+    pe: "28.0x",
+    evSales: "4.8x",
+    theme: "Company-specific research",
+    bull: "Live data integrations will identify the key upside drivers for this ticker.",
+    bear: "Current preview data is illustrative, so source filings and provider data should be checked before drawing conclusions.",
+    peers: ["NVDA", "AMD", "MRVL", "AVGO"],
+    segments: ["Core operations", "Growth initiatives", "Balance sheet"],
+    endMarkets: ["Public markets", "Sector peers", "Research workflow"],
+    revenueBase: 3.1,
+    revenueSlope: 0.09,
+    grossBase: 38.0,
+    grossSlope: 0.8,
+    operatingBase: 10.0,
+    operatingSlope: 1.0,
+    scores: [58, 55, 52, 61, 50] as [number, number, number, number, number],
+    label: "Mixed profile / needs more research",
+  };
+  const data = structuredClone(mockDashboard);
+  const changePercent = (profile.change / profile.price) * 100;
+  const base = profile.price * 0.72;
+
+  data.company = {
+    ...data.company,
+    ticker,
+    name: profile.name,
+    sector: profile.sector,
+    industry: profile.industry,
+    marketCap: profile.marketCap,
+    description: profile.description,
+    ceo: profile.ceo,
+    employees: profile.employees ?? data.company.employees,
+    website: profile.website ?? data.company.website,
+  };
+  data.quote = {
+    ...data.quote,
+    price: profile.price,
+    change: profile.change,
+    changePercent,
+  };
+  data.priceHistory = data.priceHistory.map((point, index) => ({
+    ...point,
+    close: Number((base + index * profile.price * 0.035 + Math.sin(index) * profile.price * 0.025).toFixed(2)),
+  }));
+  data.financialMetrics = [
+    { label: "Revenue", value: profile.revenue, change: profile.revenueGrowth, status: profile.revenueGrowth.startsWith("+") ? "up" : "down" },
+    { label: "Gross margin", value: profile.margin, change: profile.marginChange ?? "Stable", status: profile.marginChange?.startsWith("+") ? "up" : "flat" },
+    { label: "Operating margin", value: profile.operatingMargin, change: profile.operatingChange ?? "Mixed", status: profile.operatingChange?.startsWith("+") ? "up" : "flat" },
+    { label: "Net income", value: profile.netIncome, change: profile.incomeChange ?? "Latest FY", status: "up" },
+    { label: "Free cash flow", value: profile.fcf, change: profile.fcfChange ?? "Latest FY", status: "up" },
+    { label: "Cash", value: profile.cash, change: "Liquidity", status: "up" },
+    { label: "Debt", value: profile.debt, change: "Watch leverage", status: "flat" },
+    { label: "P/S", value: profile.ps, change: profile.valuationNote ?? "Peer check", status: "down" },
+    { label: "P/E", value: profile.pe, change: "Research metric", status: "flat" },
+    { label: "EV/Sales", value: profile.evSales, change: "Research metric", status: "flat" },
+  ];
+  data.revenueMargins = data.revenueMargins.map((point, index) => ({
+    ...point,
+    revenue: Number((profile.revenueBase * (1 + index * profile.revenueSlope)).toFixed(1)),
+    grossMargin: Number((profile.grossBase + index * profile.grossSlope).toFixed(1)),
+    operatingMargin: Number((profile.operatingBase + index * profile.operatingSlope).toFixed(1)),
+  }));
+  data.competitors = profile.peers.map((peerTicker, index) => {
+    const peerProfile = mockProfiles[peerTicker] ?? mockProfiles.NVDA;
+    return {
+      ticker: peerTicker,
+      name: peerProfile.name,
+      marketCap: formatMockCap(peerProfile.marketCap),
+      revenueGrowth: peerProfile.revenueGrowth.replace(" YoY", ""),
+      psRatio: peerProfile.ps,
+      relationshipType: index === 0 ? "direct_peer" : index === 1 ? "theme_peer" : "sector_peer",
+      whyItCompetes: `${peerTicker} is included as a mock peer for ${profile.theme.toLowerCase()} exposure and relative valuation context.`,
+    };
+  });
+  data.news = data.news.map((article, index) => ({
+    ...article,
+    title: `${ticker} ${mockNewsHooks[index]}`,
+    whyItMatters: `${profile.name.split(" ")[0]} investors would watch this because it can affect ${profile.theme.toLowerCase()} expectations, margins, or valuation risk.`,
+  }));
+  data.filings = data.filings.map((filing) => ({
+    ...filing,
+    summary: `${ticker} ${filing.formType} mock summary: review source filings for business mix, liquidity, competition, risk factors, and recent operating commentary.`,
+  }));
+  data.report = {
+    ...data.report,
+    executiveSummary: [
+      `${profile.name} is modeled here as a ${profile.theme.toLowerCase()} research candidate, with ticker-specific mock data until live APIs are connected.`,
+      `${profile.revenue} revenue and ${profile.margin} gross margin are illustrative placeholders for the dashboard workflow.`,
+      `The main bull case is: ${profile.bull}`,
+      `The main bear case is: ${profile.bear}`,
+      "Scores are a research framework only and should not be read as investment advice.",
+    ],
+    biggestBullPoint: profile.bull,
+    biggestBearPoint: profile.bear,
+    businessOverview: {
+      whatTheyDo: profile.description,
+      howTheyMakeMoney: `${profile.name} monetization is represented with mock segment and end-market data pending provider integration.`,
+      mainSegments: profile.segments,
+      keyCustomersOrEndMarkets: profile.endMarkets,
+    },
+    valuation: {
+      summary: `${ticker} screens at ${profile.ps} sales and ${profile.pe} earnings in this mock dataset.`,
+      relativeValuation: `Compare ${ticker} against ${profile.peers.join(", ")} for peer context once live data is connected.`,
+      expensiveOrCheapVsPeers: profile.valuationNote ?? "Valuation signal is illustrative until provider metrics are available.",
+    },
+    bullCase: [profile.bull, `Theme exposure: ${profile.theme}.`, "Cleaner live data will improve confidence in the research score."],
+    bearCase: [profile.bear, "Mock data can miss company-specific risk until source documents are connected.", "Peer multiples may change materially with market conditions."],
+    risks: [
+      { risk: "Data freshness", severity: "medium", explanation: "This is currently mocked data, so source filings and market data should be verified." },
+      { risk: "Valuation sensitivity", severity: profile.ps.includes("x") ? "medium" : "low", explanation: "Multiple compression can matter if growth or margins disappoint." },
+      { risk: "Execution risk", severity: "medium", explanation: `${ticker} still requires company-specific diligence around demand, competition, and capital allocation.` },
+    ],
+    catalysts: [
+      { catalyst: "Next earnings report", timeframe: "Near term", whyItMatters: "Revenue growth, margins, and guidance will shape the next research update." },
+      { catalyst: `${profile.theme} demand checks`, timeframe: "3-12 months", whyItMatters: "Theme durability affects peer comparisons and valuation support." },
+    ],
+    themeExposure: [
+      { theme: profile.theme, exposureLevel: "high", reason: `${ticker} is mapped to this primary theme for the mock dashboard.` },
+      { theme: profile.sector, exposureLevel: "medium", reason: "Sector context will be refined with live provider classifications." },
+    ],
+    researchVerdict: {
+      ...data.report.researchVerdict,
+      summary: `${ticker} is a ticker-specific mock preview. Use it to review layout and workflow, not as source-verified research.`,
+      qualityScore: profile.scores[0],
+      growthScore: profile.scores[1],
+      valuationRiskScore: profile.scores[2],
+      balanceSheetScore: profile.scores[3],
+      momentumScore: profile.scores[4],
+      overallResearchScore: Math.round(0.25 * profile.scores[0] + 0.25 * profile.scores[1] + 0.2 * profile.scores[3] + 0.15 * profile.scores[4] + 0.15 * (100 - profile.scores[2])),
+      label: profile.label,
     },
   };
+
+  return data;
+}
+
+type MockProfile = {
+  name: string;
+  description: string;
+  sector: string;
+  industry: string;
+  ceo: string;
+  marketCap: number;
+  employees?: number;
+  website?: string;
+  price: number;
+  change: number;
+  revenue: string;
+  revenueGrowth: string;
+  margin: string;
+  marginChange?: string;
+  operatingMargin: string;
+  operatingChange?: string;
+  netIncome: string;
+  incomeChange?: string;
+  fcf: string;
+  fcfChange?: string;
+  cash: string;
+  debt: string;
+  ps: string;
+  pe: string;
+  evSales: string;
+  valuationNote?: string;
+  theme: string;
+  bull: string;
+  bear: string;
+  peers: string[];
+  segments: string[];
+  endMarkets: string[];
+  revenueBase: number;
+  revenueSlope: number;
+  grossBase: number;
+  grossSlope: number;
+  operatingBase: number;
+  operatingSlope: number;
+  scores: [number, number, number, number, number];
+  label: string;
+};
+
+const mockProfiles: Record<string, MockProfile> = {
+  NVDA: {
+    name: "NVIDIA Corporation",
+    description: mockDashboard.company.description,
+    sector: "Technology",
+    industry: "Semiconductors",
+    ceo: "Jensen Huang",
+    marketCap: 2920000000000,
+    employees: 29600,
+    website: "https://www.nvidia.com",
+    price: 119.44,
+    change: 2.18,
+    revenue: "$130.5B",
+    revenueGrowth: "+114% YoY",
+    margin: "75.0%",
+    marginChange: "+2.3 pts",
+    operatingMargin: "62.4%",
+    operatingChange: "+8.7 pts",
+    netIncome: "$72.9B",
+    fcf: "$60.9B",
+    cash: "$43.2B",
+    debt: "$10.3B",
+    ps: "22.4x",
+    pe: "40.1x",
+    evSales: "21.8x",
+    valuationNote: "Premium",
+    theme: "AI data center",
+    bull: "AI infrastructure demand can remain structurally strong if model scaling and enterprise deployment continue.",
+    bear: "A premium valuation could compress if growth normalizes faster than investors expect.",
+    peers: ["AMD", "AVGO", "MRVL", "ANET"],
+    segments: ["Data Center", "Gaming", "Professional Visualization", "Automotive"],
+    endMarkets: ["Cloud hyperscalers", "AI labs", "Enterprise AI buyers", "Gaming users"],
+    revenueBase: 16.7,
+    revenueSlope: 1.7,
+    grossBase: 62.3,
+    grossSlope: 3.2,
+    operatingBase: 27.2,
+    operatingSlope: 8.8,
+    scores: [94, 92, 78, 88, 84],
+    label: "Strong but monitor valuation/risk",
+  },
+  AMD: {
+    name: "Advanced Micro Devices",
+    description: "AMD designs CPUs, GPUs, adaptive SoCs, and data center accelerators used across cloud, enterprise, PC, gaming, and embedded markets.",
+    sector: "Technology",
+    industry: "Semiconductors",
+    ceo: "Lisa Su",
+    marketCap: 240000000000,
+    price: 147.22,
+    change: -1.34,
+    revenue: "$25.8B",
+    revenueGrowth: "+14% YoY",
+    margin: "51.2%",
+    operatingMargin: "12.8%",
+    netIncome: "$1.6B",
+    fcf: "$2.1B",
+    cash: "$6.0B",
+    debt: "$3.0B",
+    ps: "9.5x",
+    pe: "48.0x",
+    evSales: "9.2x",
+    valuationNote: "Growth premium",
+    theme: "AI accelerators",
+    bull: "AI accelerator adoption and server CPU share gains can expand data center revenue.",
+    bear: "Competition from NVIDIA and custom silicon could pressure pricing and share assumptions.",
+    peers: ["NVDA", "AVGO", "MRVL", "INTC"],
+    segments: ["Data Center", "Client", "Gaming", "Embedded"],
+    endMarkets: ["Cloud", "Enterprise servers", "PCs", "Gaming consoles"],
+    revenueBase: 16.4,
+    revenueSlope: 0.14,
+    grossBase: 44.5,
+    grossSlope: 1.5,
+    operatingBase: 8.5,
+    operatingSlope: 1.2,
+    scores: [76, 78, 67, 72, 69],
+    label: "Mixed profile / needs more research",
+  },
+  CRDO: {
+    name: "Credo Technology Group",
+    description: "Credo supplies high-speed connectivity products including optical DSPs, SerDes chiplets, active electrical cables, and networking IP for data infrastructure.",
+    sector: "Technology",
+    industry: "Semiconductor connectivity",
+    ceo: "Bill Brennan",
+    marketCap: 10600000000,
+    price: 63.7,
+    change: 3.42,
+    revenue: "$193M",
+    revenueGrowth: "+64% YoY",
+    margin: "63.4%",
+    operatingMargin: "-3.8%",
+    netIncome: "-$16M",
+    fcf: "-$8M",
+    cash: "$383M",
+    debt: "$0M",
+    ps: "54.9x",
+    pe: "N/M",
+    evSales: "52.6x",
+    valuationNote: "Very high growth multiple",
+    theme: "AI networking",
+    bull: "AI cluster bandwidth demand can drive adoption of high-speed connectivity and optical products.",
+    bear: "Valuation embeds large growth assumptions while profitability is still developing.",
+    peers: ["MRVL", "AVGO", "ANET", "AAOI"],
+    segments: ["Optical DSP", "AEC", "SerDes IP", "Line cards"],
+    endMarkets: ["AI clusters", "Hyperscale data centers", "Networking OEMs"],
+    revenueBase: 0.1,
+    revenueSlope: 0.55,
+    grossBase: 58.4,
+    grossSlope: 1.2,
+    operatingBase: -28.0,
+    operatingSlope: 6.1,
+    scores: [58, 87, 91, 74, 82],
+    label: "Speculative high-growth profile",
+  },
+  PLAB: {
+    name: "Photronics",
+    description: "Photronics manufactures photomasks used in semiconductor and flat panel display production.",
+    sector: "Technology",
+    industry: "Photomasks",
+    ceo: "Frank Lee",
+    marketCap: 1800000000,
+    price: 28.14,
+    change: 0.22,
+    revenue: "$892M",
+    revenueGrowth: "+3% YoY",
+    margin: "37.6%",
+    operatingMargin: "25.5%",
+    netIncome: "$146M",
+    fcf: "$104M",
+    cash: "$550M",
+    debt: "$20M",
+    ps: "2.0x",
+    pe: "12.5x",
+    evSales: "1.4x",
+    valuationNote: "Lower multiple",
+    theme: "Semicap supply chain",
+    bull: "Photomask demand can benefit from semiconductor complexity and regional fab investment.",
+    bear: "Growth may be cyclical and tied to customer capex and display-market demand.",
+    peers: ["AMAT", "KLAC", "ASML", "NVDA"],
+    segments: ["Integrated circuit photomasks", "Flat panel display photomasks"],
+    endMarkets: ["Foundries", "IDMs", "Display manufacturers"],
+    revenueBase: 0.65,
+    revenueSlope: 0.08,
+    grossBase: 32.1,
+    grossSlope: 1.1,
+    operatingBase: 18.4,
+    operatingSlope: 1.4,
+    scores: [72, 48, 33, 86, 52],
+    label: "Value profile with cyclical risk",
+  },
+  OKLO: {
+    name: "Oklo Inc.",
+    description: "Oklo is developing advanced fission power plants and fuel recycling capabilities for clean, reliable energy customers.",
+    sector: "Energy",
+    industry: "Advanced nuclear",
+    ceo: "Jacob DeWitte",
+    marketCap: 7200000000,
+    price: 54.18,
+    change: -2.7,
+    revenue: "$0M",
+    revenueGrowth: "Pre-revenue",
+    margin: "N/M",
+    operatingMargin: "N/M",
+    netIncome: "-$63M",
+    fcf: "-$78M",
+    cash: "$275M",
+    debt: "$0M",
+    ps: "N/M",
+    pe: "N/M",
+    evSales: "N/M",
+    valuationNote: "Milestone-driven",
+    theme: "Nuclear energy",
+    bull: "Power demand from AI data centers could increase interest in firm clean generation.",
+    bear: "Commercialization, licensing, and funding timelines are uncertain.",
+    peers: ["SMR", "CEG", "VST", "GEV"],
+    segments: ["Advanced reactors", "Fuel recycling", "Power purchase agreements"],
+    endMarkets: ["Data centers", "Industrial power", "Utilities"],
+    revenueBase: 0,
+    revenueSlope: 0.02,
+    grossBase: 0,
+    grossSlope: 0,
+    operatingBase: -85,
+    operatingSlope: 8,
+    scores: [32, 76, 88, 58, 74],
+    label: "Speculative milestone-driven profile",
+  },
+  MRVL: {
+    name: "Marvell Technology",
+    description: "Marvell provides data infrastructure semiconductors across networking, storage, optical, security, and custom silicon markets.",
+    sector: "Technology",
+    industry: "Data infrastructure semiconductors",
+    ceo: "Matt Murphy",
+    marketCap: 62000000000,
+    price: 71.36,
+    change: 1.07,
+    revenue: "$5.5B",
+    revenueGrowth: "+7% YoY",
+    margin: "61.0%",
+    operatingMargin: "19.8%",
+    netIncome: "$580M",
+    fcf: "$1.1B",
+    cash: "$950M",
+    debt: "$4.2B",
+    ps: "10.7x",
+    pe: "38.5x",
+    evSales: "11.2x",
+    valuationNote: "AI recovery premium",
+    theme: "AI networking",
+    bull: "Custom silicon and optical networking can benefit from AI data center buildouts.",
+    bear: "Non-AI end markets and leverage can weigh on the recovery profile.",
+    peers: ["AVGO", "CRDO", "ANET", "NVDA"],
+    segments: ["Data center", "Carrier infrastructure", "Enterprise networking", "Automotive"],
+    endMarkets: ["Cloud", "Networking OEMs", "Storage", "Telecom"],
+    revenueBase: 4.5,
+    revenueSlope: 0.08,
+    grossBase: 58.1,
+    grossSlope: 0.7,
+    operatingBase: 15.2,
+    operatingSlope: 1.2,
+    scores: [68, 73, 66, 57, 65],
+    label: "Mixed profile / needs more research",
+  },
+};
+
+const mockNewsHooks = [
+  "demand checks move the watchlist",
+  "valuation debate sharpens around the next catalyst",
+  "peer read-through highlights what matters next",
+];
+
+function formatMockCap(value: number) {
+  if (value >= 1_000_000_000_000) return `$${(value / 1_000_000_000_000).toFixed(2)}T`;
+  if (value >= 1_000_000_000) return `$${(value / 1_000_000_000).toFixed(1)}B`;
+  return `$${(value / 1_000_000).toFixed(0)}M`;
 }

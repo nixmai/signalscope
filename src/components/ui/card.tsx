@@ -10,7 +10,7 @@ export function Card({
   return (
     <section
       className={cn(
-        "rounded-lg border border-white/10 bg-white/[0.045] shadow-[0_20px_70px_rgba(0,0,0,0.28)] backdrop-blur",
+        "rounded-lg border border-white/10 bg-[#0b0f18]/80 shadow-[0_10px_40px_rgba(0,0,0,0.22)] backdrop-blur",
         className,
       )}
     >
@@ -32,9 +32,9 @@ export function CardHeader({
     <div className="flex items-start justify-between gap-4 border-b border-white/10 px-4 py-3">
       <div>
         {eyebrow ? (
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-cyan-200/70">{eyebrow}</p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-cyan-200/65">{eyebrow}</p>
         ) : null}
-        <h2 className="mt-1 text-sm font-semibold text-zinc-100">{title}</h2>
+        <h2 className="mt-1 text-sm font-medium text-zinc-100">{title}</h2>
       </div>
       {action}
     </div>

@@ -28,27 +28,28 @@ export default async function TickerPage({ params }: PageProps) {
     <div className="min-h-screen bg-[#05070d] text-zinc-100">
       <Navbar />
       <main className="mx-auto max-w-[1500px] space-y-4 px-4 py-4">
-        <div className="rounded-lg border border-amber-300/20 bg-amber-300/10 px-4 py-3 font-mono text-xs text-amber-100">
-          Phase 1 mock data active. TODO: connect dashboard shape to SEC EDGAR, FMP, Finnhub, Polygon/Massive, and OpenAI report generation.
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-white/10 bg-[#0b0f18]/80 px-4 py-2 text-xs text-zinc-400">
+          <span className="font-mono uppercase tracking-[0.16em] text-cyan-200/70">Mock research preview</span>
+          <span>Provider + OpenAI integrations are staged next; values are ticker-specific placeholders.</span>
         </div>
         <StockHeader data={data} />
-        <div className="grid gap-4 xl:grid-cols-[330px_1fr_360px]">
-          <div className="space-y-4">
-            <CompanySnapshotCard data={data} />
-            <ValuationCard data={data} />
-            <CompetitorMap data={data} />
-          </div>
+        <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
           <div className="space-y-4">
             <ExecutiveSummaryCard data={data} />
             <PriceChartCard data={data} />
             <FinancialMetricsGrid data={data} />
             <RevenueMarginChart data={data} />
             <BullBearCaseCard data={data} />
+            <div className="grid gap-4 lg:grid-cols-2">
+              <CompanySnapshotCard data={data} />
+              <ValuationCard data={data} />
+            </div>
           </div>
           <div className="space-y-4">
             <RiskScoreCard data={data} />
             <CatalystsCard data={data} />
             <ThemeExposureCard data={data} />
+            <CompetitorMap data={data} />
             <NewsFeedCard data={data} />
             <FilingsCard data={data} />
           </div>

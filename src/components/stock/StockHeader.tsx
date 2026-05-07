@@ -9,17 +9,17 @@ export function StockHeader({ data }: Readonly<{ data: DashboardData }>) {
   const positive = data.quote.change >= 0;
 
   return (
-    <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4 backdrop-blur">
-      <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
+    <section className="rounded-lg border border-white/10 bg-[#0b0f18]/90 p-4 shadow-[0_10px_40px_rgba(0,0,0,0.22)] backdrop-blur">
+      <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
         <div>
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-4xl font-semibold text-white">{data.company.ticker}</h1>
-            <span className="text-xl text-zinc-400">{data.company.name}</span>
+            <h1 className="text-3xl font-semibold text-white sm:text-4xl">{data.company.ticker}</h1>
+            <span className="text-lg text-zinc-300 sm:text-xl">{data.company.name}</span>
             <StatusPill>{data.company.exchange}</StatusPill>
             <StatusPill tone="positive">{data.company.sector}</StatusPill>
           </div>
           <p className="mt-3 max-w-4xl text-sm leading-6 text-zinc-400">{data.company.description}</p>
-          <div className="mt-4 flex flex-wrap gap-3 font-mono text-xs text-zinc-500">
+          <div className="mt-3 flex flex-wrap gap-3 font-mono text-xs text-zinc-500">
             <span>{data.company.industry}</span>
             <span>CEO: {data.company.ceo}</span>
             <span>{data.company.country}</span>
@@ -27,10 +27,10 @@ export function StockHeader({ data }: Readonly<{ data: DashboardData }>) {
           </div>
         </div>
         <div className="min-w-[280px]">
-          <div className="rounded-md border border-white/10 bg-black/35 p-4">
+          <div className="rounded-md border border-white/10 bg-black/30 p-4">
             <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-500">Current price</p>
             <div className="mt-2 flex items-end gap-3">
-              <span className="text-4xl font-semibold text-white">${data.quote.price.toFixed(2)}</span>
+              <span className="text-3xl font-semibold text-white">${data.quote.price.toFixed(2)}</span>
               <span className={positive ? "pb-1 text-sm text-emerald-300" : "pb-1 text-sm text-rose-300"}>
                 {positive ? "+" : ""}
                 {data.quote.change.toFixed(2)} ({positive ? "+" : ""}
