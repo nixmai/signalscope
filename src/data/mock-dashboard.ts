@@ -428,6 +428,13 @@ export async function getDashboardData(symbol: string): Promise<DashboardData> {
 
   return {
     ...data,
+    company: {
+      ...data.company,
+      marketCap: freePriceData.marketCap ?? data.company.marketCap,
+      exchange: freePriceData.exchange ?? data.company.exchange,
+      sector: freePriceData.sector ?? data.company.sector,
+      industry: freePriceData.industry ?? data.company.industry,
+    },
     quote: {
       ...data.quote,
       price: freePriceData.price,
@@ -439,9 +446,9 @@ export async function getDashboardData(symbol: string): Promise<DashboardData> {
     },
     priceHistory: compressHistoryForChart(freePriceData.history),
     dataNotice: {
-      label: "Free delayed/public price data",
+      label: "Free public market data",
       detail:
-        "Price and chart history are pulled from a free public source and may be delayed, end-of-day, rate-limited, or unavailable. Fundamentals and report text are still mocked.",
+        "Price, chart, market cap, sector, and industry are pulled from a free public source and may be delayed, end-of-day, rate-limited, or unavailable. Fundamentals and report text are still mocked.",
       sourceUrl: freePriceData.sourceUrl,
     },
   };

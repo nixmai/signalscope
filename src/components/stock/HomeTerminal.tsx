@@ -60,7 +60,7 @@ export function HomeTerminal() {
                 <Link
                   href={`/ticker/${ticker}`}
                   key={ticker}
-                  className="rounded-md border border-white/10 bg-white/5 px-3 py-2 font-mono text-xs text-zinc-300 transition hover:border-cyan-300/40 hover:text-cyan-100"
+                  className="rounded-md border border-white/10 bg-white/5 px-3 py-2 font-mono text-xs text-zinc-300 transition hover:border-violet-300/40 hover:text-violet-100"
                 >
                   {ticker}
                 </Link>
@@ -76,10 +76,10 @@ export function HomeTerminal() {
         >
           <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-3">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-emerald-200/70">Live workspace</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-violet-200/70">Live workspace</p>
               <h2 className="mt-1 text-lg font-semibold text-white">Research Command Center</h2>
             </div>
-            <Activity className="size-5 text-emerald-300" />
+            <Activity className="size-5 text-violet-300" />
           </div>
           <div className="space-y-3">
             {terminalRows.map((row) => {
@@ -87,7 +87,7 @@ export function HomeTerminal() {
               return (
                 <div key={row.label} className="rounded-md border border-white/10 bg-white/[0.045] p-3">
                   <div className="flex items-center gap-3">
-                    <Icon className="size-4 text-cyan-200" />
+                    <Icon className="size-4 text-violet-200" />
                     <span className="font-mono text-xs uppercase tracking-[0.18em] text-zinc-500">{row.label}</span>
                   </div>
                   <p className="mt-2 text-sm text-zinc-200">{row.value}</p>

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #05070d;
+  --background: #05030a;
   --foreground: #f4f4f5;
 }
 
@@ -19,9 +19,9 @@ body {
 }
 
 ::selection {
-  background: rgba(34, 211, 238, 0.35);
+  background: rgba(167, 139, 250, 0.35);
 }
 
 * {
-  scrollbar-color: rgba(34, 211, 238, 0.45) rgba(255, 255, 255, 0.06);
+  scrollbar-color: rgba(167, 139, 250, 0.45) rgba(255, 255, 255, 0.06);
 }

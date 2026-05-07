@@ -10,7 +10,7 @@ export function Card({
   return (
     <section
       className={cn(
-        "rounded-lg border border-white/10 bg-[#0b0f18]/80 shadow-[0_10px_40px_rgba(0,0,0,0.22)] backdrop-blur",
+        "rounded-lg border border-violet-300/10 bg-[#0c0714]/86 shadow-[0_12px_44px_rgba(0,0,0,0.28)] backdrop-blur",
         className,
       )}
     >
@@ -29,10 +29,10 @@ export function CardHeader({
   action?: React.ReactNode;
 }>) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-white/10 px-4 py-3">
+    <div className="flex items-start justify-between gap-4 border-b border-violet-300/10 px-4 py-3">
       <div>
         {eyebrow ? (
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-cyan-200/65">{eyebrow}</p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-violet-200/65">{eyebrow}</p>
         ) : null}
         <h2 className="mt-1 text-sm font-medium text-zinc-100">{title}</h2>
       </div>
@@ -49,10 +49,10 @@ export function StatusPill({
   children: React.ReactNode;
 }>) {
   const tones = {
-    positive: "border-emerald-400/30 bg-emerald-400/10 text-emerald-200",
+    positive: "border-violet-300/30 bg-violet-400/10 text-violet-100",
     negative: "border-rose-400/30 bg-rose-400/10 text-rose-200",
-    warning: "border-amber-300/30 bg-amber-300/10 text-amber-100",
-    neutral: "border-cyan-300/25 bg-cyan-300/10 text-cyan-100",
+    warning: "border-fuchsia-300/30 bg-fuchsia-400/10 text-fuchsia-100",
+    neutral: "border-violet-300/25 bg-violet-400/10 text-violet-100",
   };
 
   return (

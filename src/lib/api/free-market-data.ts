@@ -4,6 +4,13 @@ export type FreePriceData = {
   price: number;
   change: number;
   changePercent: number;
+  marketCap?: number;
+  exchange?: string;
+  sector?: string;
+  industry?: string;
+  previousClose?: number;
+  volume?: number;
+  fiftyTwoWeekRange?: string;
   lastTradingDate: string;
   history: PricePoint[];
   source: string;
@@ -74,9 +81,10 @@ async function fetchNasdaqPriceData(symbol: string): Promise<FreePriceData | nul
 
   const quoteUrl = `https://api.nasdaq.com/api/quote/${normalized}/info?assetclass=stocks`;
   const chartUrl = `https://api.nasdaq.com/api/quote/${normalized}/chart?assetclass=stocks`;
+  const summaryUrl = `https://api.nasdaq.com/api/quote/${normalized}/summary?assetclass=stocks`;
 
   try {
-    const [quoteResponse, chartResponse] = await Promise.all([
+    const [quoteResponse, chartResponse, summaryResponse] = await Promise.all([
       fetch(quoteUrl, {
         next: { revalidate: 15 * 60 },
         headers: nasdaqHeaders(),
@@ -85,13 +93,19 @@ async function fetchNasdaqPriceData(symbol: string): Promise<FreePriceData | nul
         next: { revalidate: 15 * 60 },
         headers: nasdaqHeaders(),
       }),
+      fetch(summaryUrl, {
+        next: { revalidate: 15 * 60 },
+        headers: nasdaqHeaders(),
+      }),
     ]);
 
-    if (!quoteResponse.ok || !chartResponse.ok) return null;
+    if (!quoteResponse.ok || !chartResponse.ok || !summaryResponse.ok) return null;
 
     const quoteJson = (await quoteResponse.json()) as NasdaqQuoteResponse;
     const chartJson = (await chartResponse.json()) as NasdaqChartResponse;
+    const summaryJson = (await summaryResponse.json()) as NasdaqSummaryResponse;
     const primary = quoteJson.data?.primaryData;
+    const summary = summaryJson.data?.summaryData;
     const price = parseMoney(primary?.lastSalePrice);
     const change = parseMoney(primary?.netChange);
     const changePercent = parsePercent(primary?.percentageChange);
@@ -110,6 +124,13 @@ async function fetchNasdaqPriceData(symbol: string): Promise<FreePriceData | nul
       price,
       change,
       changePercent,
+      marketCap: parseInteger(summary?.MarketCap?.value),
+      exchange: summary?.Exchange?.value,
+      sector: summary?.Sector?.value,
+      industry: summary?.Industry?.value,
+      previousClose: parseMoney(summary?.PreviousClose?.value),
+      volume: parseInteger(summary?.ShareVolume?.value),
+      fiftyTwoWeekRange: summary?.FiftTwoWeekHighLow?.value,
       lastTradingDate: primary?.lastTradeTimestamp ?? chartJson.data?.timeAsOf ?? "latest available",
       history: compressIntradayHistory(history),
       source: "Nasdaq public quote",
@@ -159,6 +180,12 @@ function parsePercent(value?: string) {
   return Number(value.replace(/[%+,]/g, ""));
 }
 
+function parseInteger(value?: string) {
+  if (!value || value === "N/A") return undefined;
+  const parsed = Number(value.replace(/[$,%+,]/g, ""));
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
 function compressIntradayHistory(history: PricePoint[]) {
   if (history.length <= 120) return history;
   const step = Math.ceil(history.length / 120);
@@ -186,5 +213,19 @@ type NasdaqChartResponse = {
         dateTime?: string;
       };
     }>;
+  };
+};
+
+type NasdaqSummaryResponse = {
+  data?: {
+    summaryData?: {
+      Exchange?: { value?: string };
+      Sector?: { value?: string };
+      Industry?: { value?: string };
+      PreviousClose?: { value?: string };
+      ShareVolume?: { value?: string };
+      MarketCap?: { value?: string };
+      FiftTwoWeekHighLow?: { value?: string };
+    };
   };
 };

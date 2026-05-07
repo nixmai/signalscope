@@ -23,19 +23,19 @@ export function ExecutiveSummaryCard({ data }: Readonly<{ data: DashboardData }>
         <ul className="space-y-3">
           {data.report.executiveSummary.map((item) => (
             <li key={item} className="flex gap-3 text-sm leading-6 text-zinc-300">
-              <Sparkles className="mt-1 size-4 shrink-0 text-cyan-200" />
+              <Sparkles className="mt-1 size-4 shrink-0 text-violet-200" />
               <span>{item}</span>
             </li>
           ))}
         </ul>
         <div className="grid gap-3">
-          <div className="rounded-md border border-emerald-300/20 bg-emerald-300/10 p-3">
-            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-200/70">Biggest bull point</p>
-            <p className="mt-2 text-sm leading-5 text-emerald-50">{data.report.biggestBullPoint}</p>
+          <div className="rounded-md border border-violet-300/20 bg-violet-300/10 p-3">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-violet-200/70">Biggest bull point</p>
+            <p className="mt-2 text-sm leading-5 text-violet-50">{data.report.biggestBullPoint}</p>
           </div>
-          <div className="rounded-md border border-amber-300/20 bg-amber-300/10 p-3">
-            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-amber-200/70">Biggest bear point</p>
-            <p className="mt-2 text-sm leading-5 text-amber-50">{data.report.biggestBearPoint}</p>
+          <div className="rounded-md border border-fuchsia-300/20 bg-fuchsia-300/10 p-3">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-fuchsia-200/70">Biggest bear point</p>
+            <p className="mt-2 text-sm leading-5 text-fuchsia-50">{data.report.biggestBearPoint}</p>
           </div>
         </div>
       </div>
@@ -47,7 +47,7 @@ export function CompanySnapshotCard({ data }: Readonly<{ data: DashboardData }>)
   const overview = data.report.businessOverview;
   return (
     <Card>
-      <CardHeader eyebrow="Company snapshot" title="Business model" action={<Building2 className="size-4 text-cyan-200" />} />
+      <CardHeader eyebrow="Company snapshot" title="Business model" action={<Building2 className="size-4 text-violet-200" />} />
       <div className="space-y-4 p-4 text-sm leading-6 text-zinc-300">
         <p>{overview.whatTheyDo}</p>
         <div className="rounded-md border border-white/10 bg-black/25 p-3">
@@ -67,7 +67,7 @@ export function CompanySnapshotCard({ data }: Readonly<{ data: DashboardData }>)
 export function FinancialMetricsGrid({ data }: Readonly<{ data: DashboardData }>) {
   return (
     <Card className="xl:col-span-2">
-      <CardHeader eyebrow="Financial metrics" title="Key operating and valuation metrics" action={<CircleDollarSign className="size-4 text-emerald-200" />} />
+      <CardHeader eyebrow="Financial metrics" title="Key operating and valuation metrics" action={<CircleDollarSign className="size-4 text-violet-200" />} />
       <div className="grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-5">
         {data.financialMetrics.map((metric) => {
           const Icon = metric.status === "up" ? ArrowUpRight : metric.status === "down" ? ArrowDownRight : Target;
@@ -75,7 +75,7 @@ export function FinancialMetricsGrid({ data }: Readonly<{ data: DashboardData }>
             <div key={metric.label} className="rounded-md border border-white/10 bg-black/25 p-3">
               <div className="flex items-center justify-between gap-3">
                 <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-500">{metric.label}</p>
-                <Icon className={cn("size-4", metric.status === "up" && "text-emerald-300", metric.status === "down" && "text-amber-300", metric.status === "flat" && "text-cyan-200")} />
+                <Icon className={cn("size-4", metric.status === "up" && "text-violet-300", metric.status === "down" && "text-fuchsia-300", metric.status === "flat" && "text-violet-200")} />
               </div>
               <p className="mt-3 text-xl font-semibold text-white">{metric.value}</p>
               <p className="mt-1 text-xs text-zinc-500">{metric.change}</p>
@@ -117,10 +117,10 @@ export function CompetitorMap({ data }: Readonly<{ data: DashboardData }>) {
 export function NewsFeedCard({ data }: Readonly<{ data: DashboardData }>) {
   return (
     <Card>
-      <CardHeader eyebrow="Recent developments" title="News that matters" action={<Newspaper className="size-4 text-cyan-200" />} />
+      <CardHeader eyebrow="Recent developments" title="News that matters" action={<Newspaper className="size-4 text-violet-200" />} />
       <div className="space-y-3 p-4">
         {data.news.map((article) => (
-          <a key={article.title} href={article.url} className="block rounded-md border border-white/10 bg-black/25 p-3 transition hover:border-cyan-300/30">
+          <a key={article.title} href={article.url} className="block rounded-md border border-white/10 bg-black/25 p-3 transition hover:border-violet-300/30">
             <div className="flex items-start justify-between gap-3">
               <h3 className="text-sm font-medium leading-5 text-white">{article.title}</h3>
               <StatusPill tone={article.sentiment}>{article.sentiment}</StatusPill>
@@ -137,10 +137,10 @@ export function NewsFeedCard({ data }: Readonly<{ data: DashboardData }>) {
 export function FilingsCard({ data }: Readonly<{ data: DashboardData }>) {
   return (
     <Card>
-      <CardHeader eyebrow="SEC filings" title="Latest source documents" action={<FileText className="size-4 text-emerald-200" />} />
+      <CardHeader eyebrow="SEC filings" title="Latest source documents" action={<FileText className="size-4 text-violet-200" />} />
       <div className="space-y-3 p-4">
         {data.filings.map((filing) => (
-          <a key={`${filing.formType}-${filing.filedAt}`} href={filing.url} className="block rounded-md border border-white/10 bg-black/25 p-3 transition hover:border-emerald-300/30">
+          <a key={`${filing.formType}-${filing.filedAt}`} href={filing.url} className="block rounded-md border border-white/10 bg-black/25 p-3 transition hover:border-violet-300/30">
             <div className="flex items-center justify-between gap-3">
               <StatusPill tone="warning">{filing.formType}</StatusPill>
               <span className="font-mono text-xs text-zinc-500">{filing.filedAt}</span>
@@ -158,10 +158,10 @@ export function BullBearCaseCard({ data }: Readonly<{ data: DashboardData }>) {
     <Card className="xl:col-span-2">
       <CardHeader eyebrow="Scenario framing" title="Bull case vs. bear case" />
       <div className="grid gap-4 p-4 md:grid-cols-2">
-        <div className="rounded-md border border-emerald-300/20 bg-emerald-300/10 p-4">
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-emerald-200/70">Bull case</p>
+        <div className="rounded-md border border-violet-300/20 bg-violet-300/10 p-4">
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-violet-200/70">Bull case</p>
           <ul className="mt-3 space-y-3">
-            {data.report.bullCase.map((item) => <li key={item} className="text-sm leading-6 text-emerald-50">{item}</li>)}
+            {data.report.bullCase.map((item) => <li key={item} className="text-sm leading-6 text-violet-50">{item}</li>)}
           </ul>
         </div>
         <div className="rounded-md border border-rose-300/20 bg-rose-300/10 p-4">
@@ -178,7 +178,7 @@ export function BullBearCaseCard({ data }: Readonly<{ data: DashboardData }>) {
 export function RiskScoreCard({ data }: Readonly<{ data: DashboardData }>) {
   return (
     <Card>
-      <CardHeader eyebrow="Risk dashboard" title="Top risk flags" action={<ShieldAlert className="size-4 text-amber-200" />} />
+      <CardHeader eyebrow="Risk dashboard" title="Top risk flags" action={<ShieldAlert className="size-4 text-fuchsia-200" />} />
       <div className="space-y-3 p-4">
         {data.report.risks.map((risk) => (
           <div key={risk.risk} className="rounded-md border border-white/10 bg-black/25 p-3">
@@ -201,12 +201,12 @@ export function ValuationCard({ data }: Readonly<{ data: DashboardData }>) {
       <CardHeader eyebrow="Valuation" title="Relative valuation view" />
       <div className="space-y-4 p-4 text-sm leading-6 text-zinc-300">
         <p>{data.report.valuation.summary}</p>
-        <div className="rounded-md border border-amber-300/20 bg-amber-300/10 p-3">
+        <div className="rounded-md border border-fuchsia-300/20 bg-fuchsia-300/10 p-3">
           <div className="flex items-center gap-2">
-            <AlertTriangle className="size-4 text-amber-200" />
-            <span className="font-mono text-xs uppercase tracking-[0.18em] text-amber-100">Valuation risk {verdict.valuationRiskScore}</span>
+            <AlertTriangle className="size-4 text-fuchsia-200" />
+            <span className="font-mono text-xs uppercase tracking-[0.18em] text-fuchsia-100">Valuation risk {verdict.valuationRiskScore}</span>
           </div>
-          <p className="mt-2 text-amber-50">{data.report.valuation.expensiveOrCheapVsPeers}</p>
+          <p className="mt-2 text-fuchsia-50">{data.report.valuation.expensiveOrCheapVsPeers}</p>
         </div>
         <p className="text-zinc-400">{data.report.valuation.relativeValuation}</p>
       </div>
@@ -241,7 +241,7 @@ export function CatalystsCard({ data }: Readonly<{ data: DashboardData }>) {
         {data.report.catalysts.map((catalyst) => (
           <div key={catalyst.catalyst} className="rounded-md border border-white/10 bg-black/25 p-3">
             <p className="text-sm font-medium text-white">{catalyst.catalyst}</p>
-            <p className="mt-1 font-mono text-xs text-cyan-200">{catalyst.timeframe}</p>
+            <p className="mt-1 font-mono text-xs text-violet-200">{catalyst.timeframe}</p>
             <p className="mt-2 text-sm leading-5 text-zinc-400">{catalyst.whyItMatters}</p>
           </div>
         ))}

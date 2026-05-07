@@ -33,11 +33,11 @@ export function TickerSearchBar({
     <form
       onSubmit={submit}
       className={cn(
-        "group flex items-center gap-2 rounded-lg border border-cyan-300/25 bg-black/40 p-1 shadow-[0_0_40px_rgba(34,211,238,0.08)] transition focus-within:border-cyan-200/60",
+        "group flex items-center gap-2 rounded-lg border border-violet-300/25 bg-black/45 p-1 shadow-[0_0_40px_rgba(139,92,246,0.1)] transition focus-within:border-violet-200/60",
         compact ? "mx-auto max-w-xl" : "w-full max-w-3xl",
       )}
     >
-      <div className="grid size-10 place-items-center text-cyan-200">
+      <div className="grid size-10 place-items-center text-violet-200">
         <Search className="size-4" />
       </div>
       <input

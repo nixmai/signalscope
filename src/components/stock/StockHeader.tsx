@@ -9,7 +9,7 @@ export function StockHeader({ data }: Readonly<{ data: DashboardData }>) {
   const positive = data.quote.change >= 0;
 
   return (
-    <section className="rounded-lg border border-white/10 bg-[#0b0f18]/90 p-4 shadow-[0_10px_40px_rgba(0,0,0,0.22)] backdrop-blur">
+    <section className="rounded-lg border border-violet-300/10 bg-[#0c0714]/92 p-4 shadow-[0_12px_44px_rgba(0,0,0,0.3)] backdrop-blur">
       <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
         <div>
           <div className="flex flex-wrap items-center gap-3">
@@ -27,11 +27,11 @@ export function StockHeader({ data }: Readonly<{ data: DashboardData }>) {
           </div>
         </div>
         <div className="min-w-[280px]">
-          <div className="rounded-md border border-white/10 bg-black/30 p-4">
+          <div className="rounded-md border border-violet-300/10 bg-black/35 p-4">
             <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-500">Last available price</p>
             <div className="mt-2 flex items-end gap-3">
               <span className="text-3xl font-semibold text-white">${data.quote.price.toFixed(2)}</span>
-              <span className={positive ? "pb-1 text-sm text-emerald-300" : "pb-1 text-sm text-rose-300"}>
+              <span className={positive ? "pb-1 text-sm text-violet-200" : "pb-1 text-sm text-rose-300"}>
                 {positive ? "+" : ""}
                 {data.quote.change.toFixed(2)} ({positive ? "+" : ""}
                 {data.quote.changePercent.toFixed(2)}%)
@@ -41,7 +41,7 @@ export function StockHeader({ data }: Readonly<{ data: DashboardData }>) {
               <span>Market cap {formatMarketCap(data.company.marketCap)}</span>
               <span>{data.quote.lastUpdated}</span>
             </div>
-            <div className="mt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-cyan-200/70">
+            <div className="mt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-violet-200/70">
               {data.quote.source} / {data.quote.freshness.replaceAll("_", " ")}
             </div>
           </div>

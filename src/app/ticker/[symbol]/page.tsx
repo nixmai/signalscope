@@ -25,11 +25,11 @@ export default async function TickerPage({ params }: PageProps) {
   const data = await getDashboardData(symbol);
 
   return (
-    <div className="min-h-screen bg-[#05070d] text-zinc-100">
+    <div className="min-h-screen bg-[#05030a] text-zinc-100">
       <Navbar />
       <main className="mx-auto max-w-[1500px] space-y-4 px-4 py-4">
-        <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-white/10 bg-[#0b0f18]/80 px-4 py-2 text-xs text-zinc-400">
-          <span className="font-mono uppercase tracking-[0.16em] text-cyan-200/70">{data.dataNotice.label}</span>
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-violet-300/10 bg-[#0c0714]/86 px-4 py-2 text-xs text-zinc-400">
+          <span className="font-mono uppercase tracking-[0.16em] text-violet-200/75">{data.dataNotice.label}</span>
           <span>{data.dataNotice.detail}</span>
         </div>
         <StockHeader data={data} />
