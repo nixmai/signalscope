@@ -1,7 +1,7 @@
 import { fetchFreePriceData } from "@/lib/api/free-market-data";
 import type { DashboardData } from "@/types/stock";
 
-export const suggestedTickers = ["NVDA", "AMD", "PLAB", "CRDO", "MRVL", "OKLO", "AAOI", "SMCI"];
+export const suggestedTickers = ["NVDA", "AMD", "CRWV", "PLAB", "CRDO", "MRVL", "OKLO", "AAOI", "SMCI"];
 
 export const trendingThemes = [
   { label: "AI data center", tickers: "NVDA, AMD, MRVL, VRT" },
@@ -107,6 +107,24 @@ export const mockDashboard: DashboardData = {
       psRatio: "17.1x",
       relationshipType: "theme_peer",
       whyItCompetes: "AI cluster buildouts increase demand for high-speed Ethernet networking.",
+    },
+  ],
+  partnerships: [
+    {
+      ticker: "MSFT",
+      name: "Microsoft",
+      relationship: "Cloud customer / AI infrastructure demand",
+      description: "Large cloud platforms are key end markets for NVIDIA accelerators, networking, and systems.",
+      importance: "high",
+      sourceLabel: "Research map",
+    },
+    {
+      ticker: "SMCI",
+      name: "Supermicro",
+      relationship: "Server ecosystem partner",
+      description: "System builders package NVIDIA GPUs and networking into AI server platforms for enterprises and cloud buyers.",
+      importance: "medium",
+      sourceLabel: "Research map",
     },
   ],
   news: [
@@ -283,6 +301,7 @@ export function getMockDashboard(symbol: string): DashboardData {
     bull: "Live data integrations will identify the key upside drivers for this ticker.",
     bear: "Current preview data is illustrative, so source filings and provider data should be checked before drawing conclusions.",
     peers: ["NVDA", "AMD", "MRVL", "AVGO"],
+    partnerships: [],
     segments: ["Core operations", "Growth initiatives", "Balance sheet"],
     endMarkets: ["Public markets", "Sector peers", "Research workflow"],
     revenueBase: 3.1,
@@ -350,6 +369,7 @@ export function getMockDashboard(symbol: string): DashboardData {
       whyItCompetes: `${peerTicker} is included as a mock peer for ${profile.theme.toLowerCase()} exposure and relative valuation context.`,
     };
   });
+  data.partnerships = profile.partnerships.length > 0 ? profile.partnerships : defaultPartnerships(ticker, profile);
   data.news = data.news.map((article, index) => ({
     ...article,
     title: `${ticker} ${mockNewsHooks[index]}`,
@@ -491,6 +511,7 @@ type MockProfile = {
   bull: string;
   bear: string;
   peers: string[];
+  partnerships: DashboardData["partnerships"];
   segments: string[];
   endMarkets: string[];
   revenueBase: number;
@@ -533,6 +554,34 @@ const mockProfiles: Record<string, MockProfile> = {
     bull: "AI infrastructure demand can remain structurally strong if model scaling and enterprise deployment continue.",
     bear: "A premium valuation could compress if growth normalizes faster than investors expect.",
     peers: ["AMD", "AVGO", "MRVL", "ANET"],
+    partnerships: [
+      {
+        ticker: "CRWV",
+        name: "CoreWeave",
+        relationship: "AI cloud infrastructure collaboration",
+        description:
+          "NVIDIA and CoreWeave announced an expanded collaboration in January 2026 to accelerate AI factory buildouts, with CoreWeave adopting NVIDIA platforms and NVIDIA investing in CoreWeave.",
+        importance: "high",
+        sourceLabel: "NVIDIA Newsroom, Jan 26 2026",
+        sourceUrl: "https://nvidianews.nvidia.com/news/nvidia-and-coreweave-strengthen-collaboration-to-accelerate-buildout-of-ai-factories",
+      },
+      {
+        ticker: "SMCI",
+        name: "Supermicro",
+        relationship: "AI server platform ecosystem",
+        description: "Supermicro is part of the server ecosystem that integrates NVIDIA accelerators into production AI infrastructure.",
+        importance: "medium",
+        sourceLabel: "Research map",
+      },
+      {
+        ticker: "MSFT",
+        name: "Microsoft",
+        relationship: "Cloud infrastructure customer",
+        description: "Microsoft Azure demand is a major category of end-market exposure for NVIDIA AI accelerators and networking.",
+        importance: "high",
+        sourceLabel: "Research map",
+      },
+    ],
     segments: ["Data Center", "Gaming", "Professional Visualization", "Automotive"],
     endMarkets: ["Cloud hyperscalers", "AI labs", "Enterprise AI buyers", "Gaming users"],
     revenueBase: 16.7,
@@ -569,6 +618,24 @@ const mockProfiles: Record<string, MockProfile> = {
     bull: "AI accelerator adoption and server CPU share gains can expand data center revenue.",
     bear: "Competition from NVIDIA and custom silicon could pressure pricing and share assumptions.",
     peers: ["NVDA", "AVGO", "MRVL", "INTC"],
+    partnerships: [
+      {
+        ticker: "MSFT",
+        name: "Microsoft",
+        relationship: "Cloud and silicon collaboration",
+        description: "AMD works with cloud providers and OEMs to deploy EPYC CPUs and Instinct accelerators in data-center workloads.",
+        importance: "medium",
+        sourceLabel: "Research map",
+      },
+      {
+        ticker: "HPE",
+        name: "Hewlett Packard Enterprise",
+        relationship: "Server channel",
+        description: "OEM server partners package AMD CPUs and accelerators for enterprise and HPC deployments.",
+        importance: "medium",
+        sourceLabel: "Research map",
+      },
+    ],
     segments: ["Data Center", "Client", "Gaming", "Embedded"],
     endMarkets: ["Cloud", "Enterprise servers", "PCs", "Gaming consoles"],
     revenueBase: 16.4,
@@ -605,6 +672,24 @@ const mockProfiles: Record<string, MockProfile> = {
     bull: "AI cluster bandwidth demand can drive adoption of high-speed connectivity and optical products.",
     bear: "Valuation embeds large growth assumptions while profitability is still developing.",
     peers: ["MRVL", "AVGO", "ANET", "AAOI"],
+    partnerships: [
+      {
+        ticker: "MSFT",
+        name: "Microsoft",
+        relationship: "AI networking customer exposure",
+        description: "Credo's connectivity products are positioned around hyperscale AI cluster bandwidth demand.",
+        importance: "medium",
+        sourceLabel: "Research map",
+      },
+      {
+        ticker: "AVGO",
+        name: "Broadcom",
+        relationship: "Ecosystem / competitor",
+        description: "Both companies participate in data-center connectivity and custom silicon ecosystems.",
+        importance: "medium",
+        sourceLabel: "Research map",
+      },
+    ],
     segments: ["Optical DSP", "AEC", "SerDes IP", "Line cards"],
     endMarkets: ["AI clusters", "Hyperscale data centers", "Networking OEMs"],
     revenueBase: 0.1,
@@ -641,6 +726,16 @@ const mockProfiles: Record<string, MockProfile> = {
     bull: "Photomask demand can benefit from semiconductor complexity and regional fab investment.",
     bear: "Growth may be cyclical and tied to customer capex and display-market demand.",
     peers: ["AMAT", "KLAC", "ASML", "NVDA"],
+    partnerships: [
+      {
+        ticker: "TSM",
+        name: "TSMC ecosystem",
+        relationship: "Foundry supply chain exposure",
+        description: "Photomasks are used by semiconductor manufacturers and foundries as part of chip fabrication workflows.",
+        importance: "medium",
+        sourceLabel: "Research map",
+      },
+    ],
     segments: ["Integrated circuit photomasks", "Flat panel display photomasks"],
     endMarkets: ["Foundries", "IDMs", "Display manufacturers"],
     revenueBase: 0.65,
@@ -677,6 +772,15 @@ const mockProfiles: Record<string, MockProfile> = {
     bull: "Power demand from AI data centers could increase interest in firm clean generation.",
     bear: "Commercialization, licensing, and funding timelines are uncertain.",
     peers: ["SMR", "CEG", "VST", "GEV"],
+    partnerships: [
+      {
+        name: "Data center power buyers",
+        relationship: "Potential customer category",
+        description: "Advanced nuclear developers are increasingly framed around future firm power demand from AI data centers and industrial load.",
+        importance: "medium",
+        sourceLabel: "Research map",
+      },
+    ],
     segments: ["Advanced reactors", "Fuel recycling", "Power purchase agreements"],
     endMarkets: ["Data centers", "Industrial power", "Utilities"],
     revenueBase: 0,
@@ -713,6 +817,24 @@ const mockProfiles: Record<string, MockProfile> = {
     bull: "Custom silicon and optical networking can benefit from AI data center buildouts.",
     bear: "Non-AI end markets and leverage can weigh on the recovery profile.",
     peers: ["AVGO", "CRDO", "ANET", "NVDA"],
+    partnerships: [
+      {
+        ticker: "AMZN",
+        name: "Amazon / AWS ecosystem",
+        relationship: "Cloud custom silicon exposure",
+        description: "Marvell participates in custom silicon and data infrastructure markets serving large cloud customers.",
+        importance: "medium",
+        sourceLabel: "Research map",
+      },
+      {
+        ticker: "NOK",
+        name: "Networking OEMs",
+        relationship: "Infrastructure channel",
+        description: "Networking and carrier infrastructure vendors are important end markets for Marvell silicon.",
+        importance: "medium",
+        sourceLabel: "Research map",
+      },
+    ],
     segments: ["Data center", "Carrier infrastructure", "Enterprise networking", "Automotive"],
     endMarkets: ["Cloud", "Networking OEMs", "Storage", "Telecom"],
     revenueBase: 4.5,
@@ -723,6 +845,74 @@ const mockProfiles: Record<string, MockProfile> = {
     operatingSlope: 1.2,
     scores: [68, 73, 66, 57, 65],
     label: "Mixed profile / needs more research",
+  },
+  CRWV: {
+    name: "CoreWeave",
+    description:
+      "CoreWeave is an AI cloud infrastructure provider that rents high-performance GPU compute capacity for training, inference, and enterprise AI workloads.",
+    sector: "Technology",
+    industry: "AI cloud infrastructure",
+    ceo: "Michael Intrator",
+    marketCap: 42000000000,
+    price: 87.2,
+    change: 3.4,
+    revenue: "$2.3B",
+    revenueGrowth: "+90% YoY",
+    margin: "68.0%",
+    operatingMargin: "12.0%",
+    netIncome: "-$850M",
+    fcf: "-$2.4B",
+    cash: "$1.5B",
+    debt: "$9.0B",
+    ps: "18.2x",
+    pe: "N/M",
+    evSales: "22.0x",
+    valuationNote: "AI infrastructure premium",
+    theme: "AI cloud infrastructure",
+    bull: "Demand for GPU capacity from AI labs and enterprises can support rapid revenue growth.",
+    bear: "Capital intensity, customer concentration, and dependency on NVIDIA supply create high execution risk.",
+    peers: ["NVDA", "MSFT", "AMZN", "GOOGL"],
+    partnerships: [
+      {
+        ticker: "NVDA",
+        name: "NVIDIA",
+        relationship: "Strategic infrastructure collaboration",
+        description:
+          "NVIDIA and CoreWeave expanded their collaboration in January 2026 to accelerate AI factory buildouts; NVIDIA also invested $2 billion in CoreWeave Class A stock.",
+        importance: "high",
+        sourceLabel: "NVIDIA Newsroom, Jan 26 2026",
+        sourceUrl: "https://nvidianews.nvidia.com/news/nvidia-and-coreweave-strengthen-collaboration-to-accelerate-buildout-of-ai-factories",
+      },
+      {
+        ticker: "OPENAI",
+        name: "OpenAI",
+        relationship: "AI compute customer",
+        description:
+          "CoreWeave announced an expanded OpenAI agreement in September 2025, bringing total disclosed contract value to approximately $22.4 billion.",
+        importance: "high",
+        sourceLabel: "CoreWeave investor release, Sep 25 2025",
+        sourceUrl: "https://investors.coreweave.com/news/news-details/2025/CoreWeave-Expands-Agreement-with-OpenAI-by-up-to-6-5B/default.aspx",
+      },
+      {
+        name: "Poolside",
+        relationship: "AI cloud services partnership",
+        description:
+          "CoreWeave announced a partnership with Poolside in October 2025 to provide AI cloud services powered by NVIDIA GB300 NVL72 systems.",
+        importance: "medium",
+        sourceLabel: "CoreWeave release, Oct 15 2025",
+        sourceUrl: "https://www.coreweave.com/news/coreweave-announces-partnership-with-foundation-model-company-poolside-to-deliver-ai-cloud-services",
+      },
+    ],
+    segments: ["AI cloud compute", "GPU clusters", "Managed AI infrastructure"],
+    endMarkets: ["AI labs", "Enterprise AI", "Cloud platforms", "Model inference"],
+    revenueBase: 0.23,
+    revenueSlope: 0.85,
+    grossBase: 52.0,
+    grossSlope: 4.0,
+    operatingBase: -30.0,
+    operatingSlope: 10.5,
+    scores: [46, 91, 86, 34, 79],
+    label: "Speculative high-growth AI infrastructure profile",
   },
 };
 
@@ -736,4 +926,16 @@ function formatMockCap(value: number) {
   if (value >= 1_000_000_000_000) return `$${(value / 1_000_000_000_000).toFixed(2)}T`;
   if (value >= 1_000_000_000) return `$${(value / 1_000_000_000).toFixed(1)}B`;
   return `$${(value / 1_000_000).toFixed(0)}M`;
+}
+
+function defaultPartnerships(ticker: string, profile: MockProfile): DashboardData["partnerships"] {
+  return [
+    {
+      name: `${profile.theme} ecosystem`,
+      relationship: "Customer / supplier ecosystem",
+      description: `${ticker} does business across the ${profile.theme.toLowerCase()} ecosystem. Live filings and news integrations will replace this curated placeholder with source-backed relationships.`,
+      importance: "medium",
+      sourceLabel: "Research map",
+    },
+  ];
 }

@@ -1,6 +1,8 @@
 import { AlertTriangle, ArrowDownRight, ArrowUpRight, Building2, CircleDollarSign, FileText, Newspaper, ShieldAlert, Sparkles, Target } from "lucide-react";
+import Link from "next/link";
 
 import { Card, CardHeader, StatusPill } from "@/components/ui/card";
+import { sectorSlug } from "@/data/market-map";
 import { cn } from "@/lib/utils/cn";
 import type { DashboardData, RiskSeverity } from "@/types/stock";
 
@@ -36,6 +38,35 @@ export function ExecutiveSummaryCard({ data }: Readonly<{ data: DashboardData }>
           <div className="rounded-md border border-fuchsia-300/20 bg-fuchsia-300/10 p-3">
             <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-fuchsia-200/70">Biggest bear point</p>
             <p className="mt-2 text-sm leading-5 text-fuchsia-50">{data.report.biggestBearPoint}</p>
+          </div>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+export function BusinessBriefCard({ data }: Readonly<{ data: DashboardData }>) {
+  const overview = data.report.businessOverview;
+
+  return (
+    <Card className="overflow-hidden border-violet-300/20 bg-violet-400/[0.075]">
+      <div className="grid gap-4 p-4 lg:grid-cols-[1fr_320px]">
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-violet-200/75">Company brief</p>
+          <h2 className="mt-2 text-2xl font-semibold text-white">{data.company.name}</h2>
+          <p className="mt-3 max-w-4xl text-sm leading-6 text-zinc-300">{overview.whatTheyDo}</p>
+          <p className="mt-3 max-w-4xl text-sm leading-6 text-zinc-400">{overview.howTheyMakeMoney}</p>
+        </div>
+        <div className="rounded-md border border-violet-300/10 bg-black/25 p-3">
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-500">Classification</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Link href={`/sector/${sectorSlug(data.company.sector)}`}>
+              <StatusPill tone="positive">{data.company.sector}</StatusPill>
+            </Link>
+            <StatusPill>{data.company.industry}</StatusPill>
+            {overview.mainSegments.slice(0, 3).map((segment) => (
+              <StatusPill key={segment}>{segment}</StatusPill>
+            ))}
           </div>
         </div>
       </div>
@@ -96,7 +127,7 @@ export function CompetitorMap({ data }: Readonly<{ data: DashboardData }>) {
           <div key={peer.ticker} className="rounded-md border border-white/10 bg-black/25 p-3">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="font-mono text-lg font-semibold text-white">{peer.ticker}</p>
+                <Link href={`/ticker/${peer.ticker}`} className="font-mono text-lg font-semibold text-white hover:text-violet-200">{peer.ticker}</Link>
                 <p className="text-sm text-zinc-400">{peer.name}</p>
               </div>
               <StatusPill>{peer.relationshipType.replaceAll("_", " ")}</StatusPill>
@@ -107,6 +138,40 @@ export function CompetitorMap({ data }: Readonly<{ data: DashboardData }>) {
               <span>{peer.psRatio} P/S</span>
             </div>
             <p className="mt-3 text-sm leading-5 text-zinc-300">{peer.whyItCompetes}</p>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+export function PartnershipsCard({ data }: Readonly<{ data: DashboardData }>) {
+  return (
+    <Card>
+      <CardHeader eyebrow="Business relationships" title="Partnerships and customer ecosystem" />
+      <div className="space-y-3 p-4">
+        {data.partnerships.map((partner) => (
+          <div key={`${partner.name}-${partner.relationship}`} className="rounded-md border border-violet-300/10 bg-black/25 p-3">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                {partner.ticker ? (
+                  <Link href={`/ticker/${partner.ticker}`} className="font-mono text-base font-semibold text-white hover:text-violet-200">
+                    {partner.ticker}
+                  </Link>
+                ) : null}
+                <p className="text-sm font-medium text-zinc-100">{partner.name}</p>
+                <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.14em] text-violet-200/70">{partner.relationship}</p>
+              </div>
+              <StatusPill tone={partner.importance === "high" ? "positive" : "neutral"}>{partner.importance}</StatusPill>
+            </div>
+            <p className="mt-3 text-sm leading-5 text-zinc-400">{partner.description}</p>
+            {partner.sourceUrl ? (
+              <a href={partner.sourceUrl} className="mt-3 inline-block text-xs text-violet-200 hover:text-violet-100" target="_blank" rel="noreferrer">
+                {partner.sourceLabel ?? "Source"}
+              </a>
+            ) : (
+              <p className="mt-3 text-xs text-zinc-500">{partner.sourceLabel}</p>
+            )}
           </div>
         ))}
       </div>

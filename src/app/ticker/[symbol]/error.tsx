@@ -13,7 +13,7 @@ export default function Error({
   reset: () => void;
 }>) {
   return (
-    <div className="min-h-screen bg-[#05030a] text-zinc-100">
+    <div className="app-shell min-h-screen text-zinc-100">
       <Navbar />
       <main className="mx-auto grid min-h-[70vh] max-w-3xl place-items-center px-4 py-16">
         <section className="rounded-lg border border-rose-300/20 bg-rose-300/10 p-6 text-center">

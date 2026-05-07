@@ -1,7 +1,9 @@
 import { Download, GitCompare, RefreshCw, Star } from "lucide-react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { StatusPill } from "@/components/ui/card";
+import { sectorSlug } from "@/data/market-map";
 import { formatMarketCap } from "@/lib/utils/formatters";
 import type { DashboardData } from "@/types/stock";
 
@@ -16,7 +18,9 @@ export function StockHeader({ data }: Readonly<{ data: DashboardData }>) {
             <h1 className="text-3xl font-semibold text-white sm:text-4xl">{data.company.ticker}</h1>
             <span className="text-lg text-zinc-300 sm:text-xl">{data.company.name}</span>
             <StatusPill>{data.company.exchange}</StatusPill>
-            <StatusPill tone="positive">{data.company.sector}</StatusPill>
+            <Link href={`/sector/${sectorSlug(data.company.sector)}`} title={`View ${data.company.sector} sector`}>
+              <StatusPill tone="positive">{data.company.sector}</StatusPill>
+            </Link>
           </div>
           <p className="mt-3 max-w-4xl text-sm leading-6 text-zinc-400">{data.company.description}</p>
           <div className="mt-3 flex flex-wrap gap-3 font-mono text-xs text-zinc-500">

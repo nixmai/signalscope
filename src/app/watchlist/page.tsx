@@ -3,7 +3,7 @@ import { Card, CardHeader, StatusPill } from "@/components/ui/card";
 
 export default function WatchlistPage() {
   return (
-    <div className="min-h-screen bg-[#05030a] text-zinc-100">
+    <div className="app-shell min-h-screen text-zinc-100">
       <Navbar />
       <main className="mx-auto max-w-5xl px-4 py-12">
         <Card>

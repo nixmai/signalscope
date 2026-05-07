@@ -1,10 +1,12 @@
-import { BarChart3, FileText, Orbit, Settings, Star } from "lucide-react";
+import { BarChart3, FileText, Layers3, Orbit, Settings, Star } from "lucide-react";
 import Link from "next/link";
 
 import { TickerSearchBar } from "@/components/stock/TickerSearchBar";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 const links = [
   { href: "/compare?symbols=NVDA,AMD,MRVL", label: "Compare", icon: BarChart3 },
+  { href: "/sectors", label: "Sectors", icon: Layers3 },
   { href: "/watchlist", label: "Watchlist", icon: Star },
   { href: "/reports", label: "Reports", icon: FileText },
 ];
@@ -42,6 +44,7 @@ export function Navbar() {
           <button className="grid size-10 place-items-center rounded-md text-zinc-400 transition hover:bg-violet-400/10 hover:text-violet-50" title="Settings">
             <Settings className="size-4" />
           </button>
+          <ThemeToggle />
         </nav>
       </div>
     </header>

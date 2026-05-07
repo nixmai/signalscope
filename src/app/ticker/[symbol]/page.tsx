@@ -1,6 +1,9 @@
 import { FooterDisclaimer, Navbar } from "@/components/layout/Navbar";
+import { MarketHeatmaps } from "@/components/market/MarketHeatmaps";
+import { SectorExplorer } from "@/components/market/SectorExplorer";
 import { PriceChartCard, RevenueMarginChart } from "@/components/stock/Charts";
 import {
+  BusinessBriefCard,
   BullBearCaseCard,
   CatalystsCard,
   CompanySnapshotCard,
@@ -9,6 +12,7 @@ import {
   FilingsCard,
   FinancialMetricsGrid,
   NewsFeedCard,
+  PartnershipsCard,
   RiskScoreCard,
   ThemeExposureCard,
   ValuationCard,
@@ -25,7 +29,7 @@ export default async function TickerPage({ params }: PageProps) {
   const data = await getDashboardData(symbol);
 
   return (
-    <div className="min-h-screen bg-[#05030a] text-zinc-100">
+    <div className="app-shell min-h-screen text-zinc-100">
       <Navbar />
       <main className="mx-auto max-w-[1500px] space-y-4 px-4 py-4">
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-violet-300/10 bg-[#0c0714]/86 px-4 py-2 text-xs text-zinc-400">
@@ -33,12 +37,14 @@ export default async function TickerPage({ params }: PageProps) {
           <span>{data.dataNotice.detail}</span>
         </div>
         <StockHeader data={data} />
+        <BusinessBriefCard data={data} />
         <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
           <div className="space-y-4">
             <ExecutiveSummaryCard data={data} />
             <PriceChartCard data={data} />
             <FinancialMetricsGrid data={data} />
             <RevenueMarginChart data={data} />
+            <MarketHeatmaps />
             <BullBearCaseCard data={data} />
             <div className="grid gap-4 lg:grid-cols-2">
               <CompanySnapshotCard data={data} />
@@ -46,7 +52,9 @@ export default async function TickerPage({ params }: PageProps) {
             </div>
           </div>
           <div className="space-y-4">
+            <SectorExplorer activeSector={data.company.sector} />
             <RiskScoreCard data={data} />
+            <PartnershipsCard data={data} />
             <CatalystsCard data={data} />
             <ThemeExposureCard data={data} />
             <CompetitorMap data={data} />

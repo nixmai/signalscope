@@ -6,7 +6,7 @@ function SkeletonBlock({ className = "" }: Readonly<{ className?: string }>) {
 
 export default function Loading() {
   return (
-    <div className="min-h-screen bg-[#05030a] text-zinc-100">
+    <div className="app-shell min-h-screen text-zinc-100">
       <Navbar />
       <main className="mx-auto max-w-[1500px] space-y-4 px-4 py-4">
         <SkeletonBlock className="h-44" />

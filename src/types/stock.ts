@@ -45,6 +45,16 @@ export type Competitor = {
   whyItCompetes: string;
 };
 
+export type Partnership = {
+  ticker?: string;
+  name: string;
+  relationship: string;
+  description: string;
+  importance: "low" | "medium" | "high";
+  sourceLabel?: string;
+  sourceUrl?: string;
+};
+
 export type NewsArticle = {
   title: string;
   source: string;
@@ -134,6 +144,7 @@ export type DashboardData = {
   financialMetrics: FinancialMetric[];
   revenueMargins: RevenueMarginPoint[];
   competitors: Competitor[];
+  partnerships: Partnership[];
   news: NewsArticle[];
   filings: Filing[];
   report: ResearchReport;

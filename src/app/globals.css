@@ -18,6 +18,53 @@ body {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+.app-shell {
+  background:
+    radial-gradient(circle at 14% 0%, rgba(124, 58, 237, 0.24), transparent 30%),
+    radial-gradient(circle at 82% 12%, rgba(217, 70, 239, 0.12), transparent 28%),
+    linear-gradient(180deg, #05030a 0%, #090512 44%, #05030a 100%);
+}
+
+html[data-theme="light"] {
+  --background: #f7f2ff;
+  --foreground: #191225;
+}
+
+html[data-theme="light"] body {
+  background: #f7f2ff;
+  color: #191225;
+}
+
+html[data-theme="light"] .app-shell,
+html[data-theme="light"] [class*="bg-[#05030a]"] {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(139, 92, 246, 0.22), transparent 28%),
+    linear-gradient(180deg, #fbf8ff 0%, #f1eaff 100%) !important;
+  color: #191225;
+}
+
+html[data-theme="light"] [class*="bg-[#0c0714]"],
+html[data-theme="light"] [class*="bg-black/"],
+html[data-theme="light"] [class*="bg-white/"] {
+  background-color: rgba(255, 255, 255, 0.82) !important;
+}
+
+html[data-theme="light"] [class*="border-white/"],
+html[data-theme="light"] [class*="border-violet-300/10"] {
+  border-color: rgba(109, 40, 217, 0.16) !important;
+}
+
+html[data-theme="light"] [class*="text-white"],
+html[data-theme="light"] [class*="text-zinc-100"],
+html[data-theme="light"] [class*="text-zinc-300"] {
+  color: #1f1630 !important;
+}
+
+html[data-theme="light"] [class*="text-zinc-400"],
+html[data-theme="light"] [class*="text-zinc-500"] {
+  color: #675a78 !important;
+}
+
 ::selection {
   background: rgba(167, 139, 250, 0.35);
 }
