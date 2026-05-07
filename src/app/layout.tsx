@@ -13,6 +13,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased">
+      <script
+        dangerouslySetInnerHTML={{
+          __html:
+            "try{document.documentElement.dataset.theme=localStorage.getItem('signalscope-theme')||'dark'}catch(e){document.documentElement.dataset.theme='dark'}",
+        }}
+      />
       <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );

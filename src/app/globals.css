@@ -65,6 +65,23 @@ html[data-theme="light"] [class*="text-zinc-500"] {
   color: #675a78 !important;
 }
 
+html[data-theme="light"] [class*="text-violet-50"],
+html[data-theme="light"] [class*="text-violet-100"],
+html[data-theme="light"] [class*="text-violet-200"] {
+  color: #5b21b6 !important;
+}
+
+html[data-theme="light"] [class*="text-rose-50"],
+html[data-theme="light"] [class*="text-rose-100"],
+html[data-theme="light"] [class*="text-rose-200"] {
+  color: #be123c !important;
+}
+
+html[data-theme="light"] [style*="rgba(139, 92, 246"],
+html[data-theme="light"] [style*="rgba(244, 63, 94"] {
+  color: white !important;
+}
+
 ::selection {
   background: rgba(167, 139, 250, 0.35);
 }

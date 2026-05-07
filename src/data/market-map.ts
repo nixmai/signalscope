@@ -110,6 +110,97 @@ export const sectors: SectorGroup[] = [
   },
 ];
 
+const sectorExpansions: Record<string, SectorStock[]> = {
+  technology: [
+    { ticker: "ORCL", name: "Oracle", weight: 1.4, change: 4.68, marketCap: "$430B", note: "Cloud infrastructure and database software" },
+    { ticker: "CRM", name: "Salesforce", weight: 0.9, change: -1.56, marketCap: "$285B", note: "Enterprise SaaS and AI workflows" },
+    { ticker: "NOW", name: "ServiceNow", weight: 0.7, change: -0.82, marketCap: "$210B", note: "Enterprise workflow software" },
+    { ticker: "ADBE", name: "Adobe", weight: 0.8, change: -1.22, marketCap: "$190B", note: "Creative and document software" },
+    { ticker: "CSCO", name: "Cisco", weight: 0.7, change: -2.82, marketCap: "$250B", note: "Networking equipment and security" },
+    { ticker: "MU", name: "Micron", weight: 0.5, change: 4.12, marketCap: "$160B", note: "Memory and storage semiconductors" },
+    { ticker: "INTC", name: "Intel", weight: 0.4, change: 4.49, marketCap: "$145B", note: "CPUs, foundry, and semiconductors" },
+    { ticker: "QCOM", name: "Qualcomm", weight: 0.6, change: 3.23, marketCap: "$210B", note: "Mobile and edge AI chips" },
+    { ticker: "ANET", name: "Arista Networks", weight: 0.5, change: -13.6, marketCap: "$112B", note: "Cloud networking" },
+    { ticker: "DELL", name: "Dell Technologies", weight: 0.4, change: 1.3, marketCap: "$95B", note: "Servers, PCs, AI infrastructure" },
+    { ticker: "SMCI", name: "Supermicro", weight: 0.3, change: 2.47, marketCap: "$45B", note: "AI server systems" },
+    { ticker: "LITE", name: "Lumentum", weight: 0.2, change: 1.92, marketCap: "$6B", note: "Optical components" },
+    { ticker: "AAOI", name: "Applied Optoelectronics", weight: 0.2, change: 2.74, marketCap: "$1B", note: "Optical networking components" },
+    { ticker: "PLAB", name: "Photronics", weight: 0.2, change: 0.78, marketCap: "$1.8B", note: "Photomasks" },
+    { ticker: "MRVL", name: "Marvell", weight: 0.6, change: 1.5, marketCap: "$62B", note: "Data infrastructure semiconductors" },
+    { ticker: "CRDO", name: "Credo", weight: 0.2, change: 3.9, marketCap: "$10B", note: "AI networking connectivity" },
+  ],
+  "communication-services": [
+    { ticker: "GOOG", name: "Alphabet Class C", weight: 3.5, change: 0.83, marketCap: "$2.5T", note: "Search and AI platforms" },
+    { ticker: "DIS", name: "Disney", weight: 0.5, change: 0.64, marketCap: "$210B", note: "Media and entertainment" },
+    { ticker: "CMCSA", name: "Comcast", weight: 0.3, change: -0.34, marketCap: "$150B", note: "Cable and media" },
+    { ticker: "VZ", name: "Verizon", weight: 0.3, change: -0.19, marketCap: "$170B", note: "Telecom services" },
+    { ticker: "T", name: "AT&T", weight: 0.3, change: 0.45, marketCap: "$160B", note: "Telecom services" },
+    { ticker: "CHTR", name: "Charter", weight: 0.2, change: -1.1, marketCap: "$45B", note: "Broadband and cable" },
+    { ticker: "EA", name: "Electronic Arts", weight: 0.2, change: 0.38, marketCap: "$40B", note: "Gaming" },
+    { ticker: "TTWO", name: "Take-Two", weight: 0.2, change: 0.74, marketCap: "$32B", note: "Gaming" },
+    { ticker: "SPOT", name: "Spotify", weight: 0.3, change: 1.82, marketCap: "$120B", note: "Audio streaming" },
+    { ticker: "PINS", name: "Pinterest", weight: 0.1, change: -0.92, marketCap: "$25B", note: "Social discovery" },
+  ],
+  "consumer-discretionary": [
+    { ticker: "BKNG", name: "Booking Holdings", weight: 0.6, change: 1.41, marketCap: "$180B", note: "Online travel" },
+    { ticker: "SBUX", name: "Starbucks", weight: 0.4, change: -0.32, marketCap: "$105B", note: "Coffee retail" },
+    { ticker: "NKE", name: "Nike", weight: 0.3, change: 0.59, marketCap: "$140B", note: "Athletic apparel" },
+    { ticker: "LOW", name: "Lowe's", weight: 0.4, change: 0.27, marketCap: "$135B", note: "Home improvement" },
+    { ticker: "TJX", name: "TJX Companies", weight: 0.4, change: -0.54, marketCap: "$130B", note: "Off-price retail" },
+    { ticker: "ORLY", name: "O'Reilly Auto Parts", weight: 0.3, change: 0.84, marketCap: "$90B", note: "Auto parts retail" },
+    { ticker: "AZO", name: "AutoZone", weight: 0.3, change: 0.46, marketCap: "$70B", note: "Auto parts retail" },
+    { ticker: "RCL", name: "Royal Caribbean", weight: 0.2, change: 2.18, marketCap: "$65B", note: "Cruise travel" },
+    { ticker: "ABNB", name: "Airbnb", weight: 0.3, change: -1.03, marketCap: "$85B", note: "Travel marketplace" },
+    { ticker: "CMG", name: "Chipotle", weight: 0.3, change: 0.77, marketCap: "$75B", note: "Restaurants" },
+  ],
+  financials: [
+    { ticker: "BRK.B", name: "Berkshire Hathaway", weight: 1.8, change: 0.93, marketCap: "$1.1T", note: "Insurance and conglomerate" },
+    { ticker: "GS", name: "Goldman Sachs", weight: 0.5, change: 0.53, marketCap: "$180B", note: "Investment banking" },
+    { ticker: "MS", name: "Morgan Stanley", weight: 0.5, change: 2.17, marketCap: "$190B", note: "Wealth and investment banking" },
+    { ticker: "WFC", name: "Wells Fargo", weight: 0.5, change: 0.6, marketCap: "$260B", note: "Banking" },
+    { ticker: "C", name: "Citigroup", weight: 0.4, change: -0.1, marketCap: "$160B", note: "Global banking" },
+    { ticker: "AXP", name: "American Express", weight: 0.5, change: 1.8, marketCap: "$220B", note: "Payments and credit" },
+    { ticker: "SCHW", name: "Charles Schwab", weight: 0.3, change: 1.2, marketCap: "$150B", note: "Brokerage and wealth" },
+    { ticker: "BLK", name: "BlackRock", weight: 0.4, change: 0.9, marketCap: "$170B", note: "Asset management" },
+    { ticker: "SPGI", name: "S&P Global", weight: 0.4, change: 0.7, marketCap: "$160B", note: "Financial data and ratings" },
+    { ticker: "ICE", name: "Intercontinental Exchange", weight: 0.3, change: 0.42, marketCap: "$95B", note: "Exchanges and data" },
+  ],
+  energy: [
+    { ticker: "COP", name: "ConocoPhillips", weight: 0.5, change: -0.61, marketCap: "$130B", note: "Exploration and production" },
+    { ticker: "EOG", name: "EOG Resources", weight: 0.3, change: -0.28, marketCap: "$75B", note: "Oil and gas producer" },
+    { ticker: "MPC", name: "Marathon Petroleum", weight: 0.3, change: -1.11, marketCap: "$60B", note: "Refining" },
+    { ticker: "PSX", name: "Phillips 66", weight: 0.3, change: -0.83, marketCap: "$58B", note: "Refining and midstream" },
+    { ticker: "LNG", name: "Cheniere", weight: 0.2, change: 0.18, marketCap: "$55B", note: "LNG infrastructure" },
+    { ticker: "VST", name: "Vistra", weight: 0.3, change: 1.35, marketCap: "$58B", note: "Power generation" },
+    { ticker: "CEG", name: "Constellation Energy", weight: 0.4, change: 0.91, marketCap: "$95B", note: "Nuclear and power" },
+    { ticker: "GEV", name: "GE Vernova", weight: 0.3, change: 0.68, marketCap: "$120B", note: "Power equipment" },
+  ],
+  "health-care": [
+    { ticker: "MRK", name: "Merck", weight: 0.7, change: 0.36, marketCap: "$260B", note: "Pharma" },
+    { ticker: "PFE", name: "Pfizer", weight: 0.4, change: -0.43, marketCap: "$150B", note: "Pharma" },
+    { ticker: "TMO", name: "Thermo Fisher", weight: 0.5, change: 0.52, marketCap: "$220B", note: "Life science tools" },
+    { ticker: "ABT", name: "Abbott", weight: 0.5, change: -0.18, marketCap: "$230B", note: "Medtech and diagnostics" },
+    { ticker: "ISRG", name: "Intuitive Surgical", weight: 0.4, change: 0.94, marketCap: "$210B", note: "Robotic surgery" },
+    { ticker: "DHR", name: "Danaher", weight: 0.4, change: -0.25, marketCap: "$180B", note: "Life sciences" },
+    { ticker: "AMGN", name: "Amgen", weight: 0.4, change: 0.19, marketCap: "$160B", note: "Biotech" },
+    { ticker: "GILD", name: "Gilead", weight: 0.3, change: 0.44, marketCap: "$130B", note: "Biopharma" },
+  ],
+  "consumer-staples": [
+    { ticker: "PEP", name: "PepsiCo", weight: 0.6, change: 0.2, marketCap: "$240B", note: "Beverages and snacks" },
+    { ticker: "PM", name: "Philip Morris", weight: 0.5, change: 0.59, marketCap: "$240B", note: "Tobacco and reduced-risk products" },
+    { ticker: "MO", name: "Altria", weight: 0.3, change: 0.18, marketCap: "$95B", note: "Tobacco" },
+    { ticker: "MDLZ", name: "Mondelez", weight: 0.3, change: -0.14, marketCap: "$85B", note: "Snacks" },
+    { ticker: "CL", name: "Colgate-Palmolive", weight: 0.3, change: 0.1, marketCap: "$75B", note: "Household products" },
+    { ticker: "KMB", name: "Kimberly-Clark", weight: 0.2, change: -0.06, marketCap: "$45B", note: "Household products" },
+    { ticker: "KHC", name: "Kraft Heinz", weight: 0.2, change: 0.22, marketCap: "$40B", note: "Packaged food" },
+    { ticker: "TGT", name: "Target", weight: 0.2, change: -0.55, marketCap: "$55B", note: "Retail" },
+  ],
+};
+
+for (const sector of sectors) {
+  sector.stocks.push(...(sectorExpansions[sector.slug] ?? []));
+}
+
 export const indexHeatmaps: HeatMapGroup[] = [
   {
     slug: "sp500",
@@ -193,6 +284,70 @@ export const etfHeatmaps: HeatMapGroup[] = [
     ],
   },
 ];
+
+export const heatmapTabs = [
+  { slug: "sp500", label: "S&P 500 Index", kind: "index" },
+  { slug: "nasdaq", label: "Nasdaq 100", kind: "index" },
+  { slug: "russell-2000", label: "Russell 2000", kind: "index" },
+  { slug: "dow-jones", label: "Dow Jones", kind: "index" },
+  { slug: "sector-etfs", label: "ETF Heatmap", kind: "etf" },
+];
+
+export function getHeatmapGroup(slug = "sp500") {
+  return [...indexHeatmaps, ...etfHeatmaps].find((group) => group.slug === slug) ?? indexHeatmaps[0];
+}
+
+export function getHeatmapSectorGroups(slug = "sp500") {
+  if (slug === "sector-etfs") {
+    return [
+      {
+        name: "ETF groups",
+        stocks: etfHeatmaps[0].tiles.map((tile) => ({
+          ticker: tile.ticker,
+          name: tile.name,
+          weight: tile.weight,
+          change: tile.change,
+          marketCap: "ETF",
+          note: "Exchange-traded fund",
+        })),
+      },
+    ];
+  }
+
+  if (slug === "nasdaq") {
+    return sectors
+      .filter((sector) => ["Technology", "Communication Services", "Consumer Discretionary", "Consumer Staples"].includes(sector.name))
+      .map((sector) => ({
+        name: sector.name,
+        stocks: sector.stocks.filter((stock) =>
+          ["NVDA", "MSFT", "AAPL", "AVGO", "AMD", "ADBE", "NFLX", "COST", "GOOGL", "META", "AMZN", "TSLA", "ORCL", "QCOM", "CRWV"].includes(stock.ticker),
+        ),
+      }));
+  }
+
+  if (slug === "russell-2000") {
+    return [
+      {
+        name: "Small-cap AI and infrastructure",
+        stocks: sectors.flatMap((sector) => sector.stocks).filter((stock) => ["CRWV", "SMR", "AAOI", "PLAB", "OKLO", "LITE", "CRDO"].includes(stock.ticker)),
+      },
+    ];
+  }
+
+  if (slug === "dow-jones") {
+    return [
+      {
+        name: "Dow industrials",
+        stocks: sectors.flatMap((sector) => sector.stocks).filter((stock) => ["MSFT", "GS", "CAT", "AMGN", "HD", "MCD", "JPM", "AAPL", "V", "WMT"].includes(stock.ticker)),
+      },
+    ];
+  }
+
+  return sectors.map((sector) => ({
+    name: sector.name,
+    stocks: sector.stocks.slice(0, sector.slug === "technology" ? 18 : 12),
+  }));
+}
 
 export function getSectorBySlug(slug: string) {
   return sectors.find((sector) => sector.slug === slug);
